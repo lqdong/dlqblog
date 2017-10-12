@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 引入配置文件 -->
+    <bean id="propertyConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:db.properties"/>
+    </bean>
+
+    <!--配置多数据源-->
+    <bean id="user_00" class="org.apache.ibatis.datasource.pooled.PooledDataSource">
+        <property name="driver" value="${driver}"/>
+        <property name="url" value="${jdbc.mysql.user_00}"/>
+        <property name="username" value="${jdbc.mysql.username}"/>
+        <property name="password" value="${jdbc.mysql.password}"/>
+    </bean>
+
+    <bean id="user_01" class="org.apache.ibatis.datasource.pooled.PooledDataSource">
+        <property name="driver" value="${driver}"/>
+        <property name="url" value="${jdbc.mysql.user_01}"/>
+        <property name="username" value="${jdbc.mysql.username}"/>
+        <property name="password" value="${jdbc.mysql.password}"/>
+    </bean>
+
+    <bean id="user_02" class="org.apache.ibatis.datasource.pooled.PooledDataSource">
+        <property name="driver" value="${driver}"/>
+        <property name="url" value="${jdbc.mysql.user_02}"/>
+        <property name="username" value="${jdbc.mysql.username}"/>
+        <property name="password" value="${jdbc.mysql.password}"/>
+    </bean>
+
+    <bean id="user_03" class="org.apache.ibatis.datasource.pooled.PooledDataSource">
+        <property name="driver" value="${driver}"/>
+        <property name="url" value="${jdbc.mysql.user_03}"/>
+        <property name="username" value="${jdbc.mysql.username}"/>
+        <property name="password" value="${jdbc.mysql.password}"/>
+    </bean>
+
+    <!-- 动态获取数据源 -->
+    <bean id="mysqlDynamicDataSource" class="com.dlq.blog.db.DynamicDataSource">
+        <property name="targetDataSources">
+            <!-- 标识符类型 -->
+            <map>
+                <entry key="user_00" value-ref="user_00"/>
+                <entry key="user_01" value-ref="user_01"/>
+                <entry key="user_02" value-ref="user_02"/>
+                <entry key="user_03" value-ref="user_03"/>
+            </map>
+        </property>
+    </bean>
+
+    <!--事务-->
+    <bean id="transactionManager"
+          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="mysqlDynamicDataSource"></property>
+    </bean>
+
+    <bean id="transactionTemplate" class="org.springframework.transaction.support.TransactionTemplate">
+        <property name="transactionManager" ref="transactionManager"></property>
+        <property name="propagationBehaviorName" value="PROPAGATION_REQUIRED"></property>
+    </bean>
+
+    <!-- spring和MyBatis完美整合，不需要mybatis的配置映射文件 -->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="mysqlDynamicDataSource"/>
+        <!-- 自动扫描mapping.xml文件 -->
+        <property name="mapperLocations" value="classpath*:mybatis/mapper/*.xml"></property>
+    </bean>
+
+    <!-- DAO接口所在包名，Spring会自动查找其下的类 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <property name="basePackage" value="com.dlq.blog.dao"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property>
+    </bean>
+
+</beans>

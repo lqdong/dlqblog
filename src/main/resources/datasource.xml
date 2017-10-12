@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 引入配置文件 -->
+    <bean id="propertyConfigurer"
+          class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="classpath:db.properties"/>
+    </bean>
+    <!--默认数据源-->
+    <bean id="default" class="org.apache.ibatis.datasource.pooled.PooledDataSource">
+        <property name="driver" value="${driver}"/>
+        <property name="url" value="${jdbc.mysql.user_03}"/>
+        <property name="username" value="${jdbc.mysql.username}"/>
+        <property name="password" value="${jdbc.mysql.password}"/>
+    </bean>
+    <!--配置多数据源-->
+    <bean id="user_00" class="org.apache.ibatis.datasource.pooled.PooledDataSource">
+        <property name="driver" value="${driver}"/>
+        <property name="url" value="${jdbc.mysql.user_00}"/>
+        <property name="username" value="${jdbc.mysql.username}"/>
+        <property name="password" value="${jdbc.mysql.password}"/>
+    </bean>
+    <bean id="user_01" class="org.apache.ibatis.datasource.pooled.PooledDataSource">
+        <property name="driver" value="${driver}"/>
+        <property name="url" value="${jdbc.mysql.user_01}"/>
+        <property name="username" value="${jdbc.mysql.username}"/>
+        <property name="password" value="${jdbc.mysql.password}"/>
+    </bean>
+    <bean id="user_02" class="org.apache.ibatis.datasource.pooled.PooledDataSource">
+        <property name="driver" value="${driver}"/>
+        <property name="url" value="${jdbc.mysql.user_02}"/>
+        <property name="username" value="${jdbc.mysql.username}"/>
+        <property name="password" value="${jdbc.mysql.password}"/>
+    </bean>
+    <bean id="user_03" class="org.apache.ibatis.datasource.pooled.PooledDataSource">
+        <property name="driver" value="${driver}"/>
+        <property name="url" value="${jdbc.mysql.user_03}"/>
+        <property name="username" value="${jdbc.mysql.username}"/>
+        <property name="password" value="${jdbc.mysql.password}"/>
+    </bean>
+    <!--数据源获取类配置-->
+    <bean id="datasourceGetter" class="com.dlq.blog.datasource.DatasourceGetterImpl">
+        <constructor-arg index="0">
+            <list>
+                <ref bean="user_00"></ref>
+                <ref bean="user_01"></ref>
+                <ref bean="user_02"></ref>
+                <ref bean="user_03"></ref>
+            </list>
+        </constructor-arg>
+        <constructor-arg index="1" ref="default"/>
+    </bean>
+</beans>

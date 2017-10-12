@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dlq.blog.dao.UserDao">
+    <select id="insert" parameterType="com.dlq.blog.dao.User" resultType="object">
+        insert into user${user.tableIndex} (`firstname`, `lastname`, `gender`, `idcard`, `address`)
+        values (#{user.firstname}, #{user.lastname}, #{user.gender}, #{user.idcard}, #{user.address})
+    </select>
+
+    <select id="select" parameterType="com.dlq.blog.dao.User" resultType="com.dlq.blog.dao.User">
+        select * from user${user.tableIndex} where idcard=#{user.idcard}
+    </select>
+</mapper>

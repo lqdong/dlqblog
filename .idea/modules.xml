@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dlqblog.iml" filepath="$PROJECT_DIR$/.idea/modules/dlqblog.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dlqblog_main.iml" filepath="$PROJECT_DIR$/.idea/modules/dlqblog_main.iml" group="dlqblog" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/dlqblog_test.iml" filepath="$PROJECT_DIR$/.idea/modules/dlqblog_test.iml" group="dlqblog" />
+    </modules>
+  </component>
+</project>
